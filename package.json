@@ -14,7 +14,7 @@
     "pdf-parse": "^1.1.1"
   },
 "scripts": {
-  "start": "node server.js"
+  "start": "node index.js"
 }
 
 }
