@@ -14,7 +14,9 @@
     "pdf-parse": "^1.1.1"
   },
 "scripts": {
-  "start": "node index.js"
+  "start": "node index.js",
+  "postinstall": "npm install"
 }
+
 
 }
