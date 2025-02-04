@@ -1,0 +1,907 @@
+<!DOCTYPE html> 
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AiBee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Fonts Link For Icons -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" 
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="icon" src="bee-static.png" type="image/x-icon">
+
+  <style>
+
+    .chat-input .input-container {
+      display: flex;
+      width: 100%;
+      /* height: 130px; */
+      align-items: center;
+      text-align: center;
+    }
+
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body.show-chatbot .chatbot-toggler img {
+      display: none;
+    }
+
+    body.show-chatbot .chatbot-toggler span.material-symbols-outlined.close {
+      display: block;
+    }
+
+    .chatbot-toggler span.material-symbols-outlined.close {
+      display: none;
+    }
+
+    .chatbot-toggler {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      outline: none;
+      font-size: 14px;
+      font-family: sans-serif;
+      border: none;
+      width: 65px;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20%;
+      background: #a4c3ee;
+      transition: all 0.2s ease;
+      z-index: 1000;
+    }
+
+    body.show-chatbot .chatbot-toggler {
+      transform: rotate(90deg);
+    }
+
+    .chatbot-toggler span {
+      color: #000000;
+      position: absolute;
+    }
+
+    .chatbot-toggler span:last-child,
+    body.show-chatbot .chatbot-toggler span:first-child {
+      opacity: 0;
+    }
+
+    body.show-chatbot .chatbot-toggler span:last-child {
+      opacity: 1;
+    }
+
+   .chatbot {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      font-size: 14px;
+      font-family: sans-serif;
+      opacity: 0;
+      width: 500px;
+      height: 600px;
+      max-height: 90%;
+      pointer-events: none;
+      transform: scale(0.5);
+      transform-origin: bottom right;
+      transition: all 0.1s ease;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      right: 1rem;
+      bottom: 6rem;
+      z-index: 999;
+    }
+    
+    body.show-chatbot .chatbot {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .chatbot header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F8E9C3;
+      padding: 10px 20px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .chatbot header img {
+      width: 35px;
+      height: 35px;
+      border-radius: 5px;
+    }
+
+    .chatbot header p {
+      flex: 1;
+      margin: 2px 0px 0px 10px;
+      font-size: 1rem;
+      color: #c29f9f;
+      font-weight: 500;
+    }
+
+    .chatbot header .close-btn {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .chatbot header h2 {
+      margin-bottom: 10px;
+      font-size: 10px;
+      color: #333;
+    }
+
+    .chatbox {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 20px;
+    }
+
+    .chatbox .chat-messages {
+      list-style: none;
+      max-height: 400px;
+    }
+
+    .chatbox .chat {
+      display: flex;
+      list-style: none;
+    }
+
+    .chatbox .outgoing {
+      margin: 20px 0;
+      justify-content: flex-end;
+      font-size: 14px;
+      font-family: sans-serif;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .chatbox .outgoing span {
+      width: 32px;
+      height: 32px;
+      color: #b0b0b0;
+      cursor: default;
+      text-align: center;
+      line-height: 32px;
+      align-self: flex-end;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin: 0 0 7px 10px;
+    }
+
+    .chatbox .incoming {
+      margin: 20px 0;
+      display: flex;
+      font-size: 14px;
+      font-family: sans-serif;
+      align-items: flex-end;
+    }
+
+    .chatbox .chat p {
+      white-space: word-wrap;
+      padding: 8px 8px;
+      border-radius: 10px 10px 0 10px;
+      max-width: 80%;
+      color: #000;
+      font-size: 16px;
+      font-family: sans-serif;
+      background: #F8E9C3;
+    }
+
+    .chatbox .incoming p {
+      border-radius: 10px 10px 10px 0;
+      color: #000;
+      background: #f2f2f2;
+    }
+
+    .chat-input {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #e9ecef;
+      border-radius: 5px;
+      margin-right: 10px;
+      word-wrap: break-word;
+    }
+
+    .chat-input .send-btn {
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+   
+
+    .chat-input {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1x solid #133651;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .chat-input .send-btn {
+      cursor: pointer;
+      font-size: 2.0 rem;
+      color: #133651;
+    }
+    .chat-input .send-btn:hover{
+      color: #3bb4ec;
+    }
+    
+
+    .voice-btn{
+      cursor: pointer;
+      font-size: 2.5rem;
+      color: #133651;
+      border-style: none;
+      background-color: white;
+    }
+
+    .voice-btn:hover{
+      color: #3bb4ec;
+    }
+    /* Typing Indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 4px 4px;
+    }
+
+    .typing-indicator span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin: 0 2px;
+      background-color: #c3c3c3;
+      border-radius: 50%;
+      animation: typing 1.5s infinite ease-in-out;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes typing {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0);
+      }
+
+      40% {
+        transform: scale(1);
+      }
+    }
+
+
+    @media (max-width: 768px) {
+      .chatbot-toggler {
+        width: 49px;
+        height: 49px;
+      }
+
+      .chatbot {
+        width: 100vw;
+        min-height: 90vh;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+        z-index: 1999;
+        overflow: hidden;
+      }
+      .input-container {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      text-align: center;
+      
+    }
+
+    }
+    .external-link{
+        margin-right: 20px;
+        font-size: 20px;
+    }
+
+
+    /* Add hover effect and smooth transition */
+/* Add hover effect and smooth transition */
+.hover-image {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-image:hover {
+
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.2); /* Enhanced shadow on hover */
+}
+
+.chatbot-toggler {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.bee-icon {
+  width: 65px;
+  height: auto;
+}
+
+.chatbot-toggler:hover .bee-icon {
+  content: url('bee.gif');
+}
+.chat-messages .chat.incoming .bee-icon {
+  width: 65px;
+  height: auto;
+  transition: 0.3s ease-in-out; /* Smooth transition */
+}
+
+.chat-messages .chat.incoming:hover .bee-icon {
+  content: url('bee.gif'); /* Switch to the GIF on hover */
+}
+.chatbot header .bee-icon {
+  width: 75px;
+  height: auto;
+  transition: 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.chatbot header:hover .bee-icon {
+  content: url('bee.gif'); /* Switch to the GIF on hover */
+}
+
+.form-container {
+  padding: 15px;
+  background-color: #fffdf6;
+  border-top: 1px solid #e0e0e0;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 0 0 15px 15px;
+}
+
+.form-container p {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+}
+
+.form-group label {
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.form-group input {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #f7d374;
+}
+
+.submit-btn {
+  background-color: #f7d374;
+  color: #383838;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #e0b85d;
+}
+
+
+
+  </style>
+</head>
+
+<body>
+  <button class="chatbot-toggler">
+    <img src="bee-static.png" class="bee-icon" width="65px" />
+    <!-- <span class="material-symbols-outlined close">close</span> -->
+  </button>
+  
+  
+  <div class="chatbot">
+    <header>
+      <img src="bee-static.png" class="bee-icon" width="75px" />
+      <p style="font-family: sans-serif; color: #000000; font-weight: bold">
+        Honey Springs Bee
+      </p>
+      <span class="material-symbols-outlined close-btn">close</span>
+
+    </header>
+  
+    <div class="chatbox">
+      <ul class="chat-messages">
+        <li class="chat incoming">
+          <img src="bee-static.png" class="bee-icon" width="65px" height="auto" style="border-radius: 4px; margin-right: 10px" />
+          <p style="white-space: normal !important;">
+            Hi there 👋<br />
+            How can I help you today? Ask any questions about anything.
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-container" id="form-container" style="display: none; position: relative; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <button class="close-btn" onclick="hideForm()" style="position: absolute; top: 10px; right: 10px; border: none; background: none; font-size: 20px; cursor: pointer; color: #555;">
+        &times;
+      </button>
+      <form id="user-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 12px;">
+        <p style="font-size: 16px; font-weight: 500; color: #333; text-align: center; margin-bottom: 12px;">
+          Tell us about your issue, and we'll get back to you soon!
+        </p>
+        <input type="text" id="name" name="name" placeholder="Your Name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;"/>
+        <input type="email" id="email" name="email" placeholder="Your Email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;"/>
+        <textarea id="description" name="description" placeholder="Briefly describe your issue..." rows="4" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;"></textarea>
+        <button type="button" class="submit-btn" id="submit-btn" style="padding: 10px; background: #007bff; color: #fff; border: none; border-radius: 5px; font-size: 14px; cursor: pointer;">
+          Submit
+        </button>
+      </form>
+    
+      <div id="success-message" style="display: none; margin-top: 15px; color: #155724; font-size: 14px; font-weight: 500; text-align: center; border: 1px solid #c3e6cb; background-color: #d4edda; padding: 10px; border-radius: 5px;">
+        Thank you! Your message has been sent successfully.
+      </div>
+    </div>
+    
+  
+    <div class="chat-input">
+      <div class="input-container">
+        <input type="text" placeholder="Ask any questions..." spellcheck="false" name="ask_prompt" required />
+        <button class="voice-btn"></button>
+        <span class="material-symbols-rounded send-btn">send</span>
+      </div>
+    </div>
+  
+
+
+  </div>
+  
+
+
+
+  <script>
+
+
+
+    const chatbotToggler = document.querySelector(".chatbot-toggler");
+    const closeBtn = document.querySelector(".close-btn");
+    const chatbox = document.querySelector(".chatbox .chat-messages");
+    const chatWindow = document.querySelector(".chatbox");
+    const chatInput = document.querySelector(".chat-input input");
+    const sendChatBtn = document.querySelector(".send-btn");
+    const voiceBtn = document.querySelector('.voice-btn');
+    const formContainer = document.getElementById("form-container");
+    const promptInput = document.querySelector(".chat-input");
+    const userForm = document.getElementById("user-form");
+
+  
+
+    voiceBtn.addEventListener('click', startVoiceRecognition);
+    function startVoiceRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+    
+            recognition.start();
+    
+            recognition.onresult = function (event) {
+              const transcript = event.results[0][0].transcript;
+              chatInput.value = transcript;
+              sendMessage();
+            };
+    
+            recognition.onerror = function (event) {
+              console.error('Speech recognition error detected: ' + event.error);
+            };
+    
+            recognition.onend = function () {
+              console.log('Speech recognition service disconnected');
+            };
+          }
+    // const regenerateBtn = document.querySelector(".regenerate-btn");
+    let userMessage = null;
+    let lastUserMessage = null;
+    let generatingResponse = false;
+    let abortController = null;
+    let typingIndicator = null;
+
+    const createChatLi = (message, className) => {
+  const chatLi = document.createElement("li");
+  chatLi.classList.add("chat", `${className}`);
+  let chatContent;
+
+  if (className === "outgoing") {
+    chatContent = `<p></p><span class="material-symbols-outlined">person</span>`;
+  } else {
+    chatContent = `<img src="bee.gif" width="65px" class="bee-icon" style="margin-right: 10px;"/><p></p>`;
+  }
+
+  chatLi.innerHTML = chatContent;
+
+  // Remove dashes from the message before setting the text
+  const cleanedMessage = message.replace(/-\s*/g, "").trim();
+  const messageElement = chatLi.querySelector("p");
+
+  if (className !== "outgoing") {
+    const beeIcon = chatLi.querySelector(".bee-icon");
+
+    // Keep the GIF while the response is being written
+    startTypingAnimation(messageElement, cleanedMessage, () => {
+      // Once typing is finished, switch to static image
+      beeIcon.src = "bee-static.png";
+    });
+
+    // Keep GIF while hovering
+    chatLi.addEventListener("mouseenter", () => {
+      beeIcon.src = "bee.gif";
+    });
+
+    // Switch back to static when not hovering
+    chatLi.addEventListener("mouseleave", () => {
+      beeIcon.src = "bee-static.png";
+    });
+  } else {
+    messageElement.textContent = cleanedMessage;
+  }
+
+  return chatLi;
+};
+
+
+const generateResponse = async (chatElement) => {
+    const messageElement = chatElement.querySelector("p");
+
+    try {
+        const response = await fetch('https://aibee-server-production.up.railway.app/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        messageElement.textContent = "";
+        stopEllipsisAnimation();
+
+        if (data.showForm) {
+            // Display the form
+            displayForm(); // Assuming you have a `displayForm` function
+        } else {
+            // Remove dashes from the AI's response
+            const cleanedMessage = data.message.replace(/-\s*/g, "\n").trim();
+            
+            // Start typing animation with the cleaned message
+            startTypingAnimation(messageElement, cleanedMessage);
+        }
+
+    } catch (error) {
+        stopEllipsisAnimation();
+        messageElement.classList.add("error");
+        messageElement.textContent = "It Seems we will Require More information";
+    }
+};
+
+
+function displayForm() {
+    // Show the form
+    document.getElementById('form-container').style.display = 'block';
+
+    // Hide the input field
+    document.querySelector('.chat-input').style.display = 'none';
+
+    chatbot.classList.add('blurred');
+}
+
+
+
+document.getElementById('user-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    console.log('Name:', name, 'Email:', email);
+
+    // Submit the form data to your server or process it
+});
+
+    const speakResponse = (text) => {
+      speechSynthesis.cancel(); // Stop any ongoing speech
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 1.1; // Adjust the rate as needed (0.1 to 10)
+        speechSynthesis.speak(utterance);
+    };
+
+
+    const startTypingAnimation = (element, message) => {
+      let currentIndex = 0;
+      let currentText = "";
+      let intervalId = setInterval(() => {
+        if (currentIndex < message.length) {
+          currentText += message[currentIndex];
+          // Generate HTML dynamically here
+          element.innerHTML = convertToHTML(currentText);
+          currentIndex++;
+        } else {
+          clearInterval(intervalId);
+        }
+        // Ensure the chat window scrolls to the bottom
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }, 1);
+    };
+
+    // Function to convert Markdown-style headings to HTML headings
+    function convertHeadings(text) {
+      return text.replace(/### (.*?)\n/g, '<h6>$1</h6>');
+    }
+
+    // Function to convert Markdown-style bold text to HTML bold tags
+    function convertBold(text) {
+      return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }
+
+    // Function to convert Markdown-style lists to HTML lists
+    function convertLists(text) {
+      return text.replace(/- (.*?)\n/g, '<li>$1</li>');
+    }
+
+    // Function to convert the entire content to HTML
+    function convertToHTML(content) {
+      let html = content;
+
+      html = convertHeadings(html);
+      html = convertBold(html);
+      html = convertLists(html);
+
+      // Convert remaining new lines to paragraphs
+      html = html.replace(/\n\n/g, '</p><p>');
+      html = '<p style="padding-top: 0px; margin-bottom: 0px;">' + html + '</p>';
+
+      return html;
+    }
+
+    const handleChat = () => {
+      userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+
+      lastUserMessage = userMessage;
+      chatInput.value = "";
+      chatInput.style.height = `${inputInitHeight}px`;
+
+      chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    
+
+      // Show the beta preview message
+    //   document.querySelector(".beta-preview-message").style.display = "block";
+
+      setTimeout(() => {
+        const incomingChatLi = createChatLi("", "incoming");
+        chatbox.appendChild(incomingChatLi);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        startEllipsisAnimation(incomingChatLi.querySelector("p"));
+        generateResponse(incomingChatLi);
+      }, 600);
+    };
+
+    const regenerateResponse = () => {
+      if (generatingResponse) {
+        stopGenerating();
+      } else {
+        if (!lastUserMessage) return;
+        userMessage = lastUserMessage;
+
+        
+
+        setTimeout(() => {
+          const incomingChatLi = createChatLi("", "incoming");
+          chatbox.appendChild(incomingChatLi);
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+          startEllipsisAnimation(incomingChatLi.querySelector("p"));
+          generateResponse(incomingChatLi);
+        }, 600);
+      }
+    };
+
+    // const stopGenerating = () => {
+    //   if (abortController) {
+    //     abortController.abort(); // Abort the fetch request
+    //     generatingResponse = false;
+    //     regenerateBtn.textContent = "Regenerate Response";
+    //     stopEllipsisAnimation();
+    //   }
+    // };
+
+    const startEllipsisAnimation = (parentElement) => {
+      typingIndicator = document.createElement("div");
+      typingIndicator.classList.add("typing-indicator");
+      typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+      if (parentElement) parentElement.appendChild(typingIndicator);
+    };
+
+    const stopEllipsisAnimation = () => {
+      if (typingIndicator) {
+        typingIndicator.remove();
+        typingIndicator = null;
+      }
+    };
+
+    // Example usage: Add this logic where you start the animation
+    document.addEventListener("DOMContentLoaded", () => {
+      const ellipsisElement = document.querySelector(".ellipsis-container");
+      startEllipsisAnimation(ellipsisElement);
+    });
+
+
+    chatInput.addEventListener("input", () => {
+      chatInput.style.height = `${inputInitHeight}px`;
+      chatInput.style.height = `${chatInput.scrollHeight}px`;
+    });
+
+    sendChatBtn.addEventListener("click", handleChat);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+        e.preventDefault();
+        handleChat();
+      }
+    });
+
+    // regenerateBtn.addEventListener("click", regenerateResponse);
+
+    chatbotToggler.addEventListener("click", () => {
+      document.body.classList.toggle("show-chatbot");
+      toggleIcons();
+    });
+
+    closeBtn.addEventListener("click", () => {
+      document.body.classList.remove("show-chatbot");
+      toggleIcons();
+    });
+
+    const toggleIcons = () => {
+      const logoIcon = document.querySelector(".chatbot-toggler img");
+      const closeIcon = document.querySelector(
+        ".chatbot-toggler span.material-symbols-outlined.close"
+      );
+
+      if (document.body.classList.contains("show-chatbot")) {
+        logoIcon.style.display = "none";
+        closeIcon.style.display = "block";
+      } else {
+        logoIcon.style.display = "block";
+        closeIcon.style.display = "none";
+      }
+    };
+
+    const inputInitHeight = chatInput.scrollHeight;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        toggleIcons();
+        speechSynthesis.cancel(); // Stop any ongoing speech on page refresh
+    });
+///////////////////////
+////////////////////
+///////////////////////
+
+  
+document.getElementById('submit-btn').addEventListener('click', () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const description = document.getElementById('description').value.trim();
+
+    if (!name || !email || !description) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const formData = {
+      name: name,
+      email: email,
+      description: description,
+    };
+
+    // Sending data via POST request to your backend
+    fetch('https://aibee-server-production.up.railway.app/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          document.getElementById('success-message').style.display = 'block';
+          document.getElementById('user-form').style.display = 'none';
+
+          // Hide the form and success message after 3 seconds
+          setTimeout(() => {
+            document.getElementById('success-message').style.display = 'none';
+            hideForm();
+          }, 3000);
+        } else {
+          alert('Failed to send the message. Please try again later.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error sending data:', error);
+        alert('An error occurred. Please try again.');
+      });
+  });
+
+  function hideForm() {
+    // Hide the form
+    document.getElementById('form-container').style.display = 'none';
+
+    // Show the input field
+    document.querySelector('.chat-input').style.display = 'flex'; // Restore input field
+}
+
+
+
+  
+  </script>
+
+</body>
+
+</html>

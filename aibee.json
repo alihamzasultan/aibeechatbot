@@ -1,0 +1,112 @@
+{
+  "start": {
+    "question": "Hello, I am finished foraging for honey. Now I am foraging for answers to your questions. Are you interested in using Bee Venom for cosmetic applications or for pain management?",
+    "options": {
+      "Pain management": "pain_allergy_check",
+      "Cosmetic applications": "cosmetic_allergy_check"
+    }
+  },
+  "pain_allergy_check": {
+    "question": "Are you allergic to any bee-related products? If you’re not sure, please ask your Doctor.",
+    "options": {
+      "No": "pain_level_check"
+    }
+  },
+  "pain_level_check": {
+    "question": "What levels of pain are you experiencing?",
+    "options": {
+      "Low": "recommend_low_pain",
+      "Mild": "recommend_mild_pain",
+      "Intense": "recommend_intense_pain"
+    }
+  },
+  "recommend_low_pain": {
+    "response": "Our APIS Bee Venom Serum 10mL + 100mg pure bee venom powder might be what you’re looking for. This item is a bee venom serum with a perfect ratio of bee venom already added. The extra vial of 100mg pure bee venom powder is to enhance the serum if needed or to use with another product."
+  },
+  "recommend_mild_pain": {
+    "response": "Our APIS Bee Venom Ointment 30mL EXTRA POTENCY might be what you’re looking for. This item contains a more potent formulation of added bee venom powder to enhance the pain-relieving effect. Also see APIS Bee Venom Spray."
+  },
+  "recommend_intense_pain": {
+    "response": "Our APIS Bee Venom Ointment 30mL EXTRA POTENCY might be what you’re looking for. This item contains a more potent formulation of added bee venom powder to enhance the pain-relieving effect. You may also want to look at our Pure Bee Venom Powders so you can make your own pain-relief cream. See items 500mg, 1g and 2g."
+  },
+  "cosmetic_allergy_check": {
+    "question": "Are you allergic to any bee-related products? If you’re not sure, please ask your doctor.",
+    "options": {
+      "No": "cosmetic_skin_problems"
+    }
+  },
+  "cosmetic_skin_problems": {
+    "question": "What are your skin problems you want to treat using bee venom?",
+    "options": {
+      "Acne": "recommend_acne",
+      "Wrinkles": "recommend_wrinkles",
+      "Dermatitis/skin tags": "recommend_dermatitis",
+      "Other": "leave_message"
+    }
+  },
+  "recommend_acne": {
+    "response": "Ok, Our APIS Bee Venom serum 10mL is the right choice for you. This item contains bee venom in a perfect ratio to eliminate those unwanted breakouts."
+  },
+  "recommend_wrinkles": {
+    "response": "Ok, Our APIS Bee Venom serum 10mL + 100mg is the right choice for you. This item contains bee venom at a perfect ratio for eliminating unwanted wrinkles and fine lines. The added 100mg pure bee venom powder vial is included if you feel you want to enhance the serum in the treatment process."
+  },
+  "recommend_dermatitis": {
+    "response": "Ok, Our APIS Bee Venom Ointment 30mL is the right choice for you. This item contains jojoba oil as a carrier of bee venom with added Manuka Honey and Royal Jelly. The oil should help nourish and moisturize dry skin."
+  },
+  "leave_message": {
+    "response": "Ok, please leave us a message with your information and what condition you are trying to treat, and we will get back to you soon!",
+    "form": {
+      "fields": ["Name", "Email", "Description"]
+    }
+  },
+  "how_to_use": {
+    "question": "How do I use Pure Bee Venom Powder?",
+    "response": "Great question! The directions are simple. Just add a small amount of room temperature water to the venom vial and shake until dissolved. Mix the solution with your favorite cream or serum. Bee Venom will readily dissolve in water. If you are considering using oil such as jojoba, castor or coconut oil as a carrier, slightly heat the oil, then add the venom. Bee venom is thermostable and can withstand high and low temperatures. Just make sure the oil is not scalding hot!"
+  },
+  "product_quantity": {
+    "question": "How much product do I need to mix with the Pure Bee Venom powder?",
+    "options": {
+      "100mg": "recommend_100mg",
+      "200mg": "recommend_200mg",
+      "500mg": "recommend_500mg",
+      "1 gram": "recommend_1g",
+      "2 grams": "recommend_2g"
+    }
+  },
+  "recommend_100mg": {
+    "response": "For 100mg use 1 oz of your favorite cream OR you can use 25mL of your favorite serum."
+  },
+  "recommend_200mg": {
+    "response": "For 200mg use 2 oz of your favorite cream OR you can use 50mL of your favorite serum."
+  },
+  "recommend_500mg": {
+    "response": "For 500mg use 4 oz of your favorite cream OR you can use 100mL of your favorite serum."
+  },
+  "recommend_1g": {
+    "response": "For 1g use 9 oz of your favorite cream OR you can use 250mL of your favorite serum."
+  },
+  "recommend_2g": {
+    "response": "For 2g use 18 oz of your favorite cream OR you can use 500mL of your favorite serum."
+  },
+  "tracking_package": {
+    "question": "I would like to track my package.",
+    "response": "Sure sting, please click the link below and add your tracking number to see where your package is located.",
+    "link": "https://www.aftership.com/track"
+  },
+  "bee_venom_collection": {
+    "question": "How is Bee Venom collected?",
+    "response": "Great question! Our beekeepers use technology that enables them to collect venom without harming us. The beekeepers use a device called a “Bee Whisperer,” that attracts and invites us to sting a glass plate using a mild electrical shock. The glass plate is then removed, and the bee venom is collected in our laboratory. The collected bee venom then goes through a purification process to remove any debris resulting in 99.99% Pure Bee Venom powder."
+  },
+  "bee_safety": {
+    "question": "Do the bees die or get hurt?",
+    "response": "We don’t die, and we don’t get hurt. After stinging the glass plate, we return to our beehive and forage flowers the next day."
+  },
+  "synthetic_chemicals": {
+    "question": "Are there any synthetic chemicals added to the products?",
+    "response": "No synthetic chemicals are used. All our products are 100% all-natural and organic, ensuring bioavailability."
+  },
+  "product_expiry": {
+    "question": "When do the products expire?",
+    "response": "The APIS Bee Venom serums and Ointments will last up to 2 years. Bee Venom powder, if left in a cool environment, will last at least 2 years, and if left at room temperature, will last 1 year. The APIS Bee Venom Spray will only last a couple of months since water is used in its formulation."
+  }
+}
